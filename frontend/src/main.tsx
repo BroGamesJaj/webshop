@@ -8,6 +8,7 @@ import Cart from './comps/Cart.tsx'
 import Login from './comps/Login.tsx'
 import Register from './comps/Register.tsx'
 import Profile from './comps/Profile.tsx'
+import Navi from './comps/Navi.tsx'
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <AppProvider>
+      <Navi/>
       <RouterProvider router={router}/>
     </AppProvider>
     

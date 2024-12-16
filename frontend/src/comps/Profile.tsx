@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useAppContext } from "../contexts/AppContext";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Profile: React.FC = () => {
   const { user, setUser } = useAppContext();
   const [form, setForm] = useState({ username: user?.username || "", password: "" });
 
-  const handleUsernameChange = (e: React.FormEvent) => {
-    e.preventDefault();
-    axios.put("http://localhost:3000/users/username", { username: form.username }).then((res) => setUser(res.data));
-  };
+    const handleUsernameChange = (e: React.FormEvent, u: string) => {
+      e.preventDefault();
+      axios.patch(`http://localhost:3000/users/${u}`, { username: form.username }).then((res) => {setUser(res.data), alert("Succesfully changed username")}).catch((err) => {if(err.response.data.message == "Username already exists"){ alert("Username already exists!") }});;
+    };
 
   const handlePasswordChange = (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,13 +18,14 @@ const Profile: React.FC = () => {
       alert("Password must be at least 6 characters, include uppercase, lowercase, and a number.");
       return;
     }
-    axios.put("http://localhost:3000/users/password", { password: form.password }).then(() => alert("Password updated!"));
+    let u = user!.username;
+    axios.patch(`http://localhost:3000/users/${u}`, { password: form.password }).then(() => alert("Password updated!"));
   };
 
   return (
-    <div>
+    <div className="container mt-5">
       <h1>Profile</h1>
-      <form onSubmit={handleUsernameChange}>
+      <form onSubmit={(event) => handleUsernameChange(event,user!.username)}>
         <input
           type="text"
           placeholder="Username"

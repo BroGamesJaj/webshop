@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -32,6 +32,18 @@ export class UsersService {
       where: { username },
     });
   }
+
+  async updateUserByUser(uname: string, data: Prisma.userUpdateInput) {
+    if(this.getUserByUsername(uname) == null) {
+      return this.prisma.user.update({
+        where: { username: uname },
+        data,
+      });
+    }else{
+      throw new ConflictException("Username already exists");
+    }
+  }
+
 
   // Update user details
   async updateUser(id: number, data: Prisma.userUpdateInput) {

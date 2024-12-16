@@ -18,6 +18,13 @@ export class UsersController {
     return this.usersService.getUserById(id);
   }
 
+  @Patch(':uname')
+  async updateUserByName(
+    @Param('uname') uname: string,
+    @Body() updateUserDto: { username?: string; password?: string }
+  ) {
+    return this.usersService.updateUserByUser(uname, updateUserDto);
+  }
   // Update user details by ID
   @Patch(':id')
   async updateUser(
