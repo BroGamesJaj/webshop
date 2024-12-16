@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAppContext } from "../contexts/AppContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from "react-router-dom";
 
 const Profile: React.FC = () => {
-  const { user, setUser } = useAppContext();
+  const { user, setUser, clearCart } = useAppContext();
   const [form, setForm] = useState({ username: user?.username || "", password: "" });
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (user == null) {
+      console.log("hi");
+      clearCart
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
     const handleUsernameChange = (e: React.FormEvent, u: string) => {
       e.preventDefault();
@@ -21,7 +30,6 @@ const Profile: React.FC = () => {
     let u = user!.username;
     axios.patch(`http://localhost:3000/users/${u}`, { password: form.password }).then(() => alert("Password updated!"));
   };
-
   return (
     <div className="container mt-5">
       <h1>Profile</h1>

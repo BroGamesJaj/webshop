@@ -3,7 +3,7 @@ import { useAppContext } from "../contexts/AppContext";
 
 export default function Navi() {
     
-    const { user, setUser, removeFromCart } = useAppContext();
+    const { user, setUser, clearCart } = useAppContext();
     return <>
         <div className="container">
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -34,7 +34,7 @@ export default function Navi() {
                                 <a className="nav-link" href="/cart">Cart</a>
                             </li>
                             <li className='nav-item'>
-                                <a className='nav-link' role='button' onClick={() => {setUser(null), removeFromCart}} href='/login'>Logout</a>
+                                <a className='nav-link' role='button' onClick={() => {clearCart(), setUser(null)}} href='/login'>Logout</a>
                             </li>
 
                         </>

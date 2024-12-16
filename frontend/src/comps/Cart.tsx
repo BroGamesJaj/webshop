@@ -1,8 +1,17 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useAppContext } from "../contexts/AppContext";
+import { useNavigate } from "react-router-dom";
 
 const Cart: React.FC = () => {
-  const { cart, removeFromCart, clearCart } = useAppContext();
+  const { cart, removeFromCart, clearCart, user } = useAppContext();
+  let navigate = useNavigate()
+  useEffect(() => {
+    if (user == null) {
+      console.log("hi");
+      clearCart
+      navigate("/login");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="container mt-5">
