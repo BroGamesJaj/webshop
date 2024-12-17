@@ -34,14 +34,20 @@ export class UsersService {
   }
 
   async updateUserByUser(uname: string, data: Prisma.userUpdateInput) {
-    if(this.getUserByUsername(uname) == null) {
-      return this.prisma.user.update({
-        where: { username: uname },
-        data,
-      });
-    }else{
-      throw new ConflictException("Username already exists");
+    const newUsername = (data.username as any)?.set || data.username;
+
+    if (newUsername) {
+      const existingUser = await this.getUserByUsername(newUsername);
+
+      if (existingUser && existingUser.username !== uname) {
+        throw new ConflictException("Username already exists");
+      }
     }
+
+    return this.prisma.user.update({
+      where: { username: uname },
+      data,
+    });
   }
 
 
